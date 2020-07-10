@@ -14,13 +14,17 @@ new Vue({
       if (!title) {
         return
       }
-      this.todos.push({
-        title: title,
-        id: Math.random(),
-        done: false,
-        date: new Date()
+      fetch('/api/todo', {
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({title})
       })
-      this.todoTitle = ''
+        .then(res => res.json())
+        .then(({todo}) => {
+          console.log(todo)
+          this.todoTitle = ''
+        })
+        .catch(e => console.log(e))
     },
     removeTodo(id) {
       this.todos = this.todos.filter(t => t.id !== id)
