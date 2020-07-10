@@ -1,0 +1,12 @@
+const Sequeilize = require('sequelize')
+const DB_NAME = 'node-todo'
+const USER_NAME = 'root'
+const PASSWORD = ''
+
+const sequelize = new Sequeilize(DB_NAME, USER_NAME, PASSWORD, {
+  host: 'localhost',
+  dialect: 'mysql'
+})
+
+
+module.exports = sequelize
