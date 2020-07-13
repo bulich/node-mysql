@@ -3,9 +3,10 @@ const Todo = require('../models/todo.js')
 const router = Router()
 
 // Получение списка задач
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    
+    const todos = await Todo.findAll()
+    res.status(201).json(todos)
   } catch (error) {
     console.log(error)
     res.status(500)
@@ -27,9 +28,12 @@ router.post('/', async (req, res) => {
 })
 
 // Изменение задачи
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
-    
+    const todo = await Todo.findByPk(+req.params.id)
+    todo.done = req.body.done
+    todo.save()
+    res.status(201).json({todo})
   } catch (error) {
     console.log(error)
     res.status(500)
@@ -37,9 +41,15 @@ router.put('/:id', (req, res) => {
 })
 
 // удаление задачи
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
-    
+    const todos = await Todo.findAll({
+      where: {
+        id: +req.params.id
+      }
+    })
+    todos[0].destroy()
+    res.status(204).json({})
   } catch (error) {
     console.log(error)
     res.status(500)
